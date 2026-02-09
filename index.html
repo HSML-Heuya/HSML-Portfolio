@@ -807,18 +807,33 @@
         // Set the initial state
         document.body.classList.add('is-loading');
         // Goodbye Logic
-document.addEventListener('mouseleave', (e) => {
-    // Check if the mouse actually left the top of the window
-    if (e.clientY <= 0) {
-        const goodbye = document.getElementById('goodbye-overlay');
-        goodbye.classList.remove('hidden');
-        
-        // Optional: Hide it again after 3 seconds if they don't actually leave
-        setTimeout(() => {
-            goodbye.classList.add('hidden');
-        }, 3000);
+function updateDisplay() {
+    const stats = JSON.parse(localStorage.getItem('hsml_clicks')) || {};
+    const totalClicks = Object.values(stats).reduce((a, b) => a + b, 0);
+    
+    let maxClicks = 0;
+    for (let id in stats) {
+        if (stats[id] > maxClicks) maxClicks = stats[id];
     }
-}, { once: true }); // 'once: true' ensures it only happens once per session
+
+    document.querySelectorAll('.btn-track').forEach(btn => {
+        const id = btn.getAttribute('data-id');
+        const count = stats[id] || 0;
+        const percentage = totalClicks > 0 ? ((count / totalClicks) * 100).toFixed(0) : 0;
+        
+        const badge = document.getElementById(`stat-${id}`);
+        if (badge) badge.innerText = `${percentage}% | ${count} click${count !== 1 ? 's' : ''}`;
+
+        const topBadge = document.getElementById(`top-${id}`);
+        if (topBadge) {
+            // This shows the 'Top' badge for the most clicked link(s)
+            topBadge.style.display = (count > 0 && count === maxClicks) ? 'block' : 'none';
+        }
+    });
+}
+
+
+
     </script>
 </body>
 </html>
