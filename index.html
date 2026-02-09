@@ -707,16 +707,6 @@
         &copy; 2026 Heuya Miguel | Data Specialist
     </div>
 </footer>
-<div id="goodbye-overlay" class="fixed inset-0 z-[10000] bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="glass-vivid p-12 rounded-[40px] border-primary/30 text-center max-w-lg">
-        <h2 class="text-5xl font-black text-primary italic uppercase mb-4">Au Revoir!</h2>
-        <p class="text-white/70 text-xl font-light tracking-wide">
-            Merci de votre visite. À bientôt dans l'univers de la data !
-        </p>
-        <div class="title-accent-bar mx-auto mt-8"></div>
-    </div>
-</div>
-
     <div id="lightbox" class="fixed inset-0 z-[200] bg-black/95 hidden flex items-center justify-center p-4 backdrop-blur-sm">
         <button onclick="closeLightbox()" class="absolute top-8 right-8 text-white text-4xl hover:text-primary transition">
             <i class="fas fa-times"></i>
@@ -766,7 +756,19 @@
             if(themeToggleBtn) {
                 themeToggleBtn.onclick = (e) => { e.stopPropagation(); themeSidebar.classList.toggle('active'); };
             }
+// Close personalization menu when clicking anywhere else on the site
+document.addEventListener('click', (event) => {
+    const themeSidebar = document.getElementById('theme-sidebar');
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
 
+    // Check if the sidebar is currently open
+    if (themeSidebar.classList.contains('active')) {
+        // If the click is NOT on the sidebar AND not on the button that opens it
+        if (!themeSidebar.contains(event.target) && !themeToggleBtn.contains(event.target)) {
+            themeSidebar.classList.remove('active');
+        }
+    }
+});
             accentPicker.oninput = (e) => setAccent(e.target.value, hexToRgb(e.target.value));
             bgPicker.oninput = (e) => setBg(e.target.value);
         });
@@ -807,30 +809,18 @@
         // Set the initial state
         document.body.classList.add('is-loading');
         // Goodbye Logic
-function updateDisplay() {
-    const stats = JSON.parse(localStorage.getItem('hsml_clicks')) || {};
-    const totalClicks = Object.values(stats).reduce((a, b) => a + b, 0);
-    
-    let maxClicks = 0;
-    for (let id in stats) {
-        if (stats[id] > maxClicks) maxClicks = stats[id];
-    }
-
-    document.querySelectorAll('.btn-track').forEach(btn => {
-        const id = btn.getAttribute('data-id');
-        const count = stats[id] || 0;
-        const percentage = totalClicks > 0 ? ((count / totalClicks) * 100).toFixed(0) : 0;
+document.addEventListener('mouseleave', (e) => {
+    // Check if the mouse actually left the top of the window
+    if (e.clientY <= 0) {
+        const goodbye = document.getElementById('goodbye-overlay');
+        goodbye.classList.remove('hidden');
         
-        const badge = document.getElementById(`stat-${id}`);
-        if (badge) badge.innerText = `${percentage}% | ${count} click${count !== 1 ? 's' : ''}`;
-
-        const topBadge = document.getElementById(`top-${id}`);
-        if (topBadge) {
-            // This shows the 'Top' badge for the most clicked link(s)
-            topBadge.style.display = (count > 0 && count === maxClicks) ? 'block' : 'none';
-        }
-    });
-}
+        // Optional: Hide it again after 3 seconds if they don't actually leave
+        setTimeout(() => {
+            goodbye.classList.add('hidden');
+        }, 3000);
+    }
+}, { once: true }); // 'once: true' ensures it only happens once per session
 
 
 
