@@ -405,13 +405,21 @@
         </div>
     </div>
 
-<nav class="fixed w-full z-50 glass py-3">
+<nav class="fixed w-full z-50 glass bg-opacity-10 backdrop-blur-md py-3">
     <div class="container mx-auto px-6 flex justify-between items-center relative min-h-[60px]">
         
-        <div class="logo-container shrink-0 z-10">
-            <img src="Image/HSML_LogoNew2 - Copy.png" alt="Logo" class="h-10 w-10 md:h-12 md:w-12 object-contain logo-img">
+        <a href="#social">
+        <div class="logo-container shrink-0 z-10 relative h-10 w-10 md:h-12 md:w-12 hover:scale-110 transition-all duration-300 cursor-pointer">
+            <img src="Image/HSML_LogoNew Copie - Copie (2).png" 
+                 alt="HSML Primary" 
+                 class="absolute inset-0 w-full h-full object-contain animate-sophisticated-morph-1 z-10">
+            
+            <img src="Image/HSML_LogoNew2 - Copy.png" 
+                 alt="HSML Secondary" 
+                 class="absolute inset-0 w-full h-full object-contain animate-sophisticated-morph-2 z-10">
         </div>
-        
+        </a>
+
         <div class="hidden md:flex md:absolute md:left-1/2 md:-translate-x-1/2 z-0">
             <div class="flex space-x-3 lg:space-x-6 text-[9px] lg:text-[10px] font-bold uppercase tracking-widest items-center">
                 <a href="#profiles" class="nav-link whitespace-nowrap">Profiles</a>
@@ -431,7 +439,6 @@
                     Personnaliser le Thème
                 </span>
             </div>
-            
             <button id="theme-toggle-btn" class="bg-primary text-black w-12 h-12 rounded-full shadow-[0_0_25px_rgba(254,196,0,0.5)] flex items-center justify-center text-xl hover:scale-110 transition-all duration-300 relative overflow-hidden">
                 <i class="fas fa-palette"></i>
             </button>
@@ -440,7 +447,6 @@
         <button id="menu-btn" class="md:hidden text-primary text-2xl z-10 ml-auto">
             <i class="fas fa-bars"></i>
         </button>
-
     </div>
 </nav>
 
